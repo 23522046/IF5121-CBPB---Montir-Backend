@@ -13,5 +13,6 @@ from sql_app.database import engine
 
 models.Base.metadata.create_all(bind=engine)
 
+# belum singleton?
 app = FastAPI()
 
