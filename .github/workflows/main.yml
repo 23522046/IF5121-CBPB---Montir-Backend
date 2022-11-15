@@ -14,5 +14,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Push to Heroku
+    - name: Login
+
+    - name: Push
+
+    - name: Release
       
