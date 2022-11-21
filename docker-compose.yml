@@ -1,25 +1,30 @@
-version: '3.8'
+version: '3.9'
 
 services:
   web:
     build: .
-    command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn sql_app.main:app --host 0.0.0.0 --port 8080 '
+    command: bash -c 'uvicorn sql_app.main:app --host 0.0.0.0 --port 8080'
     volumes:
       - .:/app
     environment:
       - DATABASE_URL=postgresql://montir_db:montir_db@db:5432/montir_db
-    depends_on:
-      - db
+    networks:
+      - gateway
+    ports:
+     - 8080:8080
   db:
     image: postgres:13-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    expose:
-      - 5432
     environment:
       - POSTGRES_USER=montir_db
       - POSTGRES_PASSWORD=montir_db
       - POSTGRES_DB=montir_db
+    networks:
+      - gateway
+
+networks:
+  gateway: {}
 
 volumes:
   postgres_data:
